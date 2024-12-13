@@ -18,7 +18,7 @@ Flask 建構之股票技術分析平台，允許使用者查詢的歷史股價�
 
 ## 安裝步驟
 
-### 1. 克隆專案
+### 1. clone專案
 ```bash
 $ git clone <repository_url>
 $ cd <project_directory>
