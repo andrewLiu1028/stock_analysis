@@ -31,7 +31,7 @@ $ pip install -r requirements.txt
 ```
 
 #### 方法 2：安裝 TA-Lib
-由於 TA-Lib 的特殊依賴，請另外下載並安裝：
+TA-Lib 要另外下載並安裝whl：
 - 將 `TA_Lib-0.4.24-cp310-cp310-win_amd64.whl` 放入專案目錄。
 - 安裝該檔案：
 ```bash
