@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>股票技術分析平台</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- moment.js (Chart.js v2 用於 time scale) -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+    <!-- Chart.js v2.9.4 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>股票技術分析查詢</h1>
+        <div class="form-group">
+            <label for="symbol">股票代碼:</label>
+            <input type="text" id="symbol" placeholder="例如: AAPL, TSLA, 2330.TW" />
+        </div>
+        <div class="form-group">
+            <label for="start_date">起始日(預設前180天):</label>
+            <input type="date" id="start_date" />
+        </div>
+        <div class="form-group">
+            <label for="end_date">結束日(預設今天):</label>
+            <input type="date" id="end_date" />
+        </div>
+        <button id="queryBtn">查詢</button>
+
+        <hr />
+
+        <div id="basicInfo" class="result-container"></div>
+        
+        <h2>生成式AI技術分析報告</h2>
+        <div id="gptAnalysis" class="result-container gpt-analysis">
+            GPT分析報告將顯示在此處
+        </div>
+
+        <h2>收盤價走勢圖</h2>
+        <div class="chart-container">
+            <canvas id="closePriceChart"></canvas>
+        </div>
+
+        <h2>成交量圖</h2>
+        <div class="chart-container">
+            <canvas id="volumeChart"></canvas>
+        </div>
+
+        <h2>MA 指標</h2>
+        <div class="chart-container">
+            <canvas id="maChart"></canvas>
+        </div>
+
+        <h2>KD 指標</h2>
+        <div class="chart-container">
+            <canvas id="kdChart"></canvas>
+        </div>
+
+        <h2>MACD 指標</h2>
+        <div class="chart-container">
+            <canvas id="macdChart"></canvas>
+        </div>
+
+        <h2>RSI 指標</h2>
+        <div class="chart-container">
+            <canvas id="rsiChart"></canvas>
+        </div>
+
+        <h2>區間股票資料表 (含指標與訊號)</h2>
+        <div id="resultTable" class="result-container"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
