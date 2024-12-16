@@ -1,29 +1,64 @@
-<!-- prettier-ignore -->
-<form method="POST" action="/signup">
-  {{form.csrf_token}}
-  {% if form.errors %}
-  <ul class="errors">
-    {% for field_name, field_errors in form.errors|dictsort if field_errors %}
-    {% for error in field_errors %}
-    <li>{{ form[field_name].label }}: {{ error }}</li>
-    {% endfor %} {% endfor %}
-  </ul>
-  {% endif %}
-  <div>
-    <label>{{form.username.label}}</label>
-    <div>{{form.username()}}</div>
-  </div>
-  <div>
-    <label>{{form.email.label}}</label>
-    <div>{{form.email()}}</div>
-  </div>
-  <div>
-    <label>{{form.password1.label}}</label>
-    <div>{{form.password1()}}</div>
-  </div>
-  <div>
-    <label>{{form.password2.label}}</label>
-    <div>{{form.password2()}}</div>
-  </div>
-  <button types="submit">Register</button>
-</form>
+<!-- signup.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>股票技術分析平台</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>會員註冊</h1>
+      <form
+        method="POST"
+        action="/signup"
+        class="form-container"
+        id="signupForm"
+      >
+        {{ form.csrf_token }} {% if form.errors %}
+        <ul class="error-message">
+          {% for field_name, field_errors in form.errors|dictsort if
+          field_errors %} {% for error in field_errors %}
+          <li>{{ form[field_name].label }}: {{ error }}</li>
+          {% endfor %} {% endfor %}
+        </ul>
+        {% endif %}
+
+        <!-- Username Field -->
+        <div class="form-group">
+          <label for="username">{{ form.username.label }}</label>
+          {{ form.username(class="input-field") }}
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group">
+          <label for="email">{{ form.email.label }}</label>
+          {{ form.email(class="input-field") }}
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <label for="password1">{{ form.password1.label }}</label>
+          {{ form.password1(class="input-field") }}
+        </div>
+
+        <!-- Confirm Password Field -->
+        <div class="form-group">
+          <label for="password2">{{ form.password2.label }}</label>
+          {{ form.password2(class="input-field") }}
+        </div>
+
+        <!-- Submit Button -->
+        <div class="button-container">
+          <button id="signupButton" type="submit">Register</button>
+        </div>
+      </form>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  </body>
+</html>
