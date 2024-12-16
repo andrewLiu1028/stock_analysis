@@ -1,13 +1,56 @@
-<form method="POST" action="/login">
-  {{form.csrf_token}}
-  <ul class="errors">
-    {% for field_name, field_errors in form.errors|dictsort if field_errors %}
-    {% for error in field_errors %}
-    <li>{{ form[field_name].label }}: {{ error }}</li>
-    {% endfor %} {% endfor %}
-  </ul>
-  <div>{{form.email.label}}{{form.email()}}</div>
-  <div>{{form.password.label}}{{form.password()}}</div>
-  <button type="submit">Login</button>
-  <a href="/signup">Signup</a>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>股票技術分析平台</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>會員登入</h1>
+    <form method="POST" action="/login" class="form-container" id="loginForm">
+      <!-- CSRF Token -->
+      {{ form.csrf_token }}
+
+      <!-- Error Messages -->
+      {% if form.errors %}
+      <ul class="error-message">
+        {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+        {% for error in field_errors %}
+        <li>{{ form[field_name].label }}: {{ error }}</li>
+        {% endfor %}
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email">{{ form.email.label }}</label>
+        {{ form.email(class="input-field") }}
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password">{{ form.password.label }}</label>
+        {{ form.password(class="input-field") }}
+      </div>
+
+      <!-- Submit Button -->
+      <div class="button-container">
+        <button id="loginButton" type="submit">Login</button>
+      </div>
+
+      <!-- Signup Link -->
+      <div class="text-center">
+        <p>
+          Don't have an account? 
+          <a href="/signup" class="signup-link">Sign up</a>
+        </p>
+      </div>
+    </form>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

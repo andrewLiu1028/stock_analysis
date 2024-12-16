@@ -21,7 +21,7 @@ class LoginForm(FlaskForm):
 
 class SignupForm(FlaskForm):
     username = StringField('User Name', validators=[validators.Length(min=3, max=40), validators.input_required()])
-    email = EmailField('Email')
+    email = EmailField('Email', validators=[validators.input_required()])
     password1 = PasswordField('Password', validators=[validators.Length(min=8, max=20), validators.input_required()])
     password2 = PasswordField('Confirm Password', validators=[validators.Length(min=8, max=20), validators.input_required()])
 
