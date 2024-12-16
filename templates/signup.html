@@ -1,0 +1,29 @@
+<!-- prettier-ignore -->
+<form method="POST" action="/signup">
+  {{form.csrf_token}}
+  {% if form.errors %}
+  <ul class="errors">
+    {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+    {% for error in field_errors %}
+    <li>{{ form[field_name].label }}: {{ error }}</li>
+    {% endfor %} {% endfor %}
+  </ul>
+  {% endif %}
+  <div>
+    <label>{{form.username.label}}</label>
+    <div>{{form.username()}}</div>
+  </div>
+  <div>
+    <label>{{form.email.label}}</label>
+    <div>{{form.email()}}</div>
+  </div>
+  <div>
+    <label>{{form.password1.label}}</label>
+    <div>{{form.password1()}}</div>
+  </div>
+  <div>
+    <label>{{form.password2.label}}</label>
+    <div>{{form.password2()}}</div>
+  </div>
+  <button types="submit">Register</button>
+</form>

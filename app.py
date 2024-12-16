@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, send_from_directory
+from flask import Flask, render_template, request, jsonify, send_from_directory, redirect
 import yfinance as yf
 import talib
 import pandas as pd
@@ -6,11 +6,33 @@ from datetime import datetime, timedelta
 import numpy as np
 import os
 import openai
+from flask_wtf.csrf import CSRFProtect
+from flask_login import LoginManager, login_user, logout_user, login_required
+from .model import User
+from .database import db
+from werkzeug.security import generate_password_hash
 
+login_manager = LoginManager()
+login_manager.login_view = '/login'
+csrf = CSRFProtect()
 app = Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///db.sqlite"
+app.config['SECRET_KEY'] = os.urandom(32)
+db.init_app(app)
+login_manager.init_app(app)
+
+
+with app.app_context():
+    db.create_all()
 
 #OpenAI API key
 openai.api_key = os.getenv("OPENAI_API_KEY")
+
+
+@login_manager.user_loader
+def load_user(user):
+    return User.query.get(int(user))
 
 def fetch_stock_data(symbol, start_date=None, end_date=None):
     if not symbol:
@@ -199,8 +221,49 @@ def get_gpt_analysis(stock_data, indicators, signals):
         return "無法獲取GPT分析結果"
 
 @app.route('/')
+@login_required
 def index():
     return render_template('index.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    from .form import LoginForm
+    form = LoginForm()
+
+    if form.validate_on_submit():        
+        email = form.email.data
+        user = User.query.filter_by(email=email).first()
+        login_user(user)
+        return redirect('/')
+
+    return render_template('login.html', form=form)
+
+
+@app.route('/signup', methods=['POST', 'GET'])
+def signup():
+    from .form import SignupForm
+    form = SignupForm()
+
+    if form.validate_on_submit():
+        email = form.email.data
+        username = form.username.data
+        password = form.password1.data
+    
+        new_user = User(email=email, name=username, password=generate_password_hash(password, method='scrypt'))
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect('/login') 
+
+    return render_template('signup.html', form=form)
+
+
+@app.route('/logout', methods=['POST', 'GET'])
+@login_required
+def logout():
+    logout_user()
+    return redirect('/login')
+
 
 @app.route('/favicon.ico')
 def favicon():

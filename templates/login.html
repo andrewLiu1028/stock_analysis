@@ -1,0 +1,13 @@
+<form method="POST" action="/login">
+  {{form.csrf_token}}
+  <ul class="errors">
+    {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+    {% for error in field_errors %}
+    <li>{{ form[field_name].label }}: {{ error }}</li>
+    {% endfor %} {% endfor %}
+  </ul>
+  <div>{{form.email.label}}{{form.email()}}</div>
+  <div>{{form.password.label}}{{form.password()}}</div>
+  <button type="submit">Login</button>
+  <a href="/signup">Signup</a>
+</form>
