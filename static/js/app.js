@@ -182,77 +182,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createClosePriceChart(data) {
-    const ctx = document.getElementById('closePriceChart').getContext('2d');
-    const labels = data.stock_data.map((d) => formatDate(d.Date));
-    const closePrices = data.stock_data.map((d) => d.Close);
-    const signals = data.signals.kd || []; // 取得買賣訊號，確保存在
+        const ctx = document.getElementById('closePriceChart').getContext('2d');
+        const labels = data.stock_data.map((d) => formatDate(d.Date));
+        const closePrices = data.stock_data.map((d) => d.Close);
 
-    // 過濾買賣信號，取得 x (日期) 和 y (價格)
-    const buySignals = signals
-        .filter(signal => signal.type === 'buy')
-        .map(signal => ({ x: labels[signal.position], y: closePrices[signal.position] }));
-
-    const sellSignals = signals
-        .filter(signal => signal.type === 'sell')
-        .map(signal => ({ x: labels[signal.position], y: closePrices[signal.position] }));
-
-    return new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [
-                {
-                    label: 'Buy Signal',
-                    data: buySignals,
-                    borderColor: 'red',
-                    pointBackgroundColor: 'red',
-                    pointStyle: 'triangle',
-                    pointRadius: 8,
-                    showLine: false // 顯示買訊號為獨立點
-                },
-                {
-                    label: 'Sell Signal',
-                    data: sellSignals,
-                    rotation: 60,
-                    borderColor: 'green',
-                    pointBackgroundColor: 'green',
-                    pointStyle: 'triangle',
-                    pointRadius: 8,
-                    showLine: false // 顯示賣訊號為獨立點
-                },
-                {
-                    label: 'Close Price',
-                    data: closePrices,
-                    borderColor: 'blue',
-                    fill: false,
-                    pointRadius: 1 // 折線圖無點點
-                }
-            ],
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true // 顯示圖例
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            const index = context.dataIndex;
-                            const date = labels[index];
-                            return `日期: ${date}`;
-                        }
-                    }
-                }
+        return new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{ label: 'Close Price', data: closePrices, borderColor: 'blue', fill: false }],
             },
-            elements: {
-                point: {
-                    radius: 4
-                }
-            }
-        }
-    });
-}
+            options: { responsive: true },
+        });
+    }
 
     function createVolumeBarChart(data) {
         const ctx = document.getElementById('volumeChart').getContext('2d');
@@ -275,18 +217,73 @@ document.addEventListener('DOMContentLoaded', () => {
         const ctx = document.getElementById('maChart').getContext('2d');
         const labels = data.stock_data.map((d) => formatDate(d.Date));
         const { ma5, ma20, ma60 } = data.indicators;
-
+        const signals = data.signals.ma || []; // 获取 MA 的买卖信号
+    
+        // 处理买卖信号
+        const buySignals = signals
+            .filter(signal => signal.type === 'buy')
+            .map(signal => ({ x: labels[signal.position], y: ma5[signal.position] || 0 })); // 使用 MA5 或其他值
+    
+        const sellSignals = signals
+            .filter(signal => signal.type === 'sell')
+            .map(signal => ({ x: labels[signal.position], y: ma5[signal.position] || 0 })); // 使用 MA5 或其他值
+    
         return new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
                 datasets: [
-                    { label: 'MA5', data: ma5, borderColor: 'orange', fill: false },
-                    { label: 'MA20', data: ma20, borderColor: 'blue', fill: false },
-                    { label: 'MA60', data: ma60, borderColor: 'purple', fill: false },
+                    {
+                        label: 'Buy Signal',
+                        data: buySignals,
+                        borderColor: 'red',
+                        pointBackgroundColor: 'red',
+                        pointStyle: 'triangle',
+                        pointRadius: 8,
+                        showLine: false // 不连接点
+                    },
+                    {
+                        label: 'Sell Signal',
+                        data: sellSignals,
+                        borderColor: 'green',
+                        pointBackgroundColor: 'green',
+                        pointStyle: 'triangle',
+                        rotation: 180, // 翻转三角形
+                        pointRadius: 8,
+                        showLine: false // 不连接点
+                    },
+                    { label: 'MA5', data: ma5, borderColor: 'orange', fill: false, pointRadius: 0 },
+                    { label: 'MA20', data: ma20, borderColor: 'blue', fill: false, pointRadius: 0 },
+                    { label: 'MA60', data: ma60, borderColor: 'purple', fill: false, pointRadius: 0 }
+                    
                 ],
             },
-            options: { responsive: true },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true // 显示图例
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                if (context.dataset.label === 'Buy Signal' || context.dataset.label === 'Sell Signal') {
+                                    const signalType = context.dataset.label === 'Buy Signal' ? 'Buy' : 'Sell';
+                                    const date = context.raw.x; // 获取日期
+                                    const value = context.raw.y.toFixed(2); // 获取值
+                                    return `${signalType} Signal - 日期: ${date}, 值: ${value}`;
+                                }
+                                return `${context.dataset.label}: ${context.raw.toFixed(2)}`;
+                            }
+                        }
+                    }
+                },
+                elements: {
+                    point: {
+                        radius: 4
+                    }
+                }
+            }
         });
     }
 
@@ -294,17 +291,70 @@ document.addEventListener('DOMContentLoaded', () => {
         const ctx = document.getElementById('kdChart').getContext('2d');
         const labels = data.stock_data.map((d) => formatDate(d.Date));
         const { k, d } = data.indicators;
-
+        const signals = data.signals.kd || []; // 获取 KD 买卖信号
+    
+        // 处理买卖信号
+        const buySignals = signals
+            .filter(signal => signal.type === 'buy')
+            .map(signal => ({ x: labels[signal.position], y: k[signal.position] }));
+    
+        const sellSignals = signals
+            .filter(signal => signal.type === 'sell')
+            .map(signal => ({ x: labels[signal.position], y: k[signal.position] }));
+    
         return new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
                 datasets: [
-                    { label: 'K', data: k, borderColor: 'green', fill: false },
-                    { label: 'D', data: d, borderColor: 'red', fill: false },
+                    {
+                        label: 'Buy Signal',
+                        data: buySignals,
+                        borderColor: 'red',
+                        pointBackgroundColor: 'red',
+                        pointStyle: 'triangle',
+                        pointRadius: 8,
+                        showLine: false // 不连接点
+                    },
+                    {
+                        label: 'Sell Signal',
+                        data: sellSignals,
+                        borderColor: 'green',
+                        pointBackgroundColor: 'green',
+                        pointStyle: 'triangle',
+                        rotation: 180, // 翻转三角形
+                        pointRadius: 8,
+                        showLine: false // 不连接点
+                    },
+                    { label: 'K', data: k, borderColor: 'blue', fill: false, pointRadius: 0 },
+                    { label: 'D', data: d, borderColor: 'orange', fill: false, pointRadius: 0 }
+                    
                 ],
             },
-            options: { responsive: true },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const index = context.dataIndex;
+                                const date = labels[index];
+                                const value = context.raw;
+                                const signalType = context.dataset.label === 'Buy Signal' ? 'Buy' : 'Sell';
+                                return `${signalType} 信号 - 日期: ${date}, 值: ${value}`;
+                            }
+                        }
+                    }
+                },
+                elements: {
+                    point: {
+                        radius: 4
+                    }
+                }
+            }
         });
     }
 
@@ -312,17 +362,72 @@ document.addEventListener('DOMContentLoaded', () => {
         const ctx = document.getElementById('macdChart').getContext('2d');
         const labels = data.stock_data.map((d) => formatDate(d.Date));
         const { macd, macd_signal } = data.indicators;
-
+        const signals = data.signals.macd || []; // 获取 MACD 买卖信号
+    
+        // 处理买卖信号
+        const buySignals = signals
+            .filter(signal => signal.type === 'buy')
+            .map(signal => ({ x: labels[signal.position], y: macd[signal.position] }));
+    
+        const sellSignals = signals
+            .filter(signal => signal.type === 'sell')
+            .map(signal => ({ x: labels[signal.position], y: macd[signal.position] }));
+    
         return new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
                 datasets: [
-                    { label: 'MACD', data: macd, borderColor: 'blue', fill: false },
-                    { label: 'Signal', data: macd_signal, borderColor: 'orange', fill: false },
+                    {
+                        label: 'Buy Signal',
+                        data: buySignals,
+                        borderColor: 'red',
+                        pointBackgroundColor: 'red',
+                        pointStyle: 'triangle',
+                        pointRadius: 8,
+                        showLine: false // 不连接点
+                    },
+                    {
+                        label: 'Sell Signal',
+                        data: sellSignals,
+                        borderColor: 'green',
+                        pointBackgroundColor: 'green',
+                        pointStyle: 'triangle',
+                        rotation: 180, // 翻转三角形
+                        pointRadius: 8,
+                        showLine: false // 不连接点
+                    },
+                    { label: 'MACD', data: macd, borderColor: 'blue', fill: false, pointRadius: 0 },
+                    { label: 'Signal', data: macd_signal, borderColor: 'orange', fill: false, pointRadius: 0 }
+                    
                 ],
             },
-            options: { responsive: true },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true // 显示图例
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                if (context.dataset.label === 'Buy Signal' || context.dataset.label === 'Sell Signal') {
+                                    const signalType = context.dataset.label === 'Buy Signal' ? 'Buy' : 'Sell';
+                                    const date = context.raw.x; // 获取日期
+                                    const value = context.raw.y.toFixed(2); // 获取值
+                                    return `${signalType} Signal - 日期: ${date}, 值: ${value}`;
+                                }
+                                return `${context.dataset.label}: ${context.raw.toFixed(2)}`;
+                            }
+                        }
+                    }
+                },
+                elements: {
+                    point: {
+                        radius: 4
+                    }
+                }
+            }
         });
     }
 
@@ -330,89 +435,77 @@ document.addEventListener('DOMContentLoaded', () => {
         const ctx = document.getElementById('rsiChart').getContext('2d');
         const labels = data.stock_data.map((d) => formatDate(d.Date));
         const rsi = data.indicators.rsi;
-
+        const signals = data.signals.rsi || []; // 获取 RSI 的买卖信号
+    
+        // 提取买卖信号
+        const buySignals = signals
+            .filter(signal => signal.type === 'buy')
+            .map(signal => ({ x: labels[signal.position], y: rsi[signal.position] }));
+    
+        const sellSignals = signals
+            .filter(signal => signal.type === 'sell')
+            .map(signal => ({ x: labels[signal.position], y: rsi[signal.position] }));
+    
         return new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
-                datasets: [{ label: 'RSI', data: rsi, borderColor: 'purple', fill: false }],
+                datasets: [
+                    {
+                        label: 'Buy Signal',
+                        data: buySignals,
+                        borderColor: 'red',
+                        pointBackgroundColor: 'red',
+                        pointStyle: 'triangle',
+                        pointRadius: 8,
+                        showLine: false // 不连接点
+                    },
+                    {
+                        label: 'Sell Signal',
+                        data: sellSignals,
+                        borderColor: 'green',
+                        pointBackgroundColor: 'green',
+                        pointStyle: 'triangle',
+                        rotation: 180, // 翻转三角形
+                        pointRadius: 8,
+                        showLine: false // 不连接点
+                    },
+                    { 
+                        label: 'RSI', 
+                        data: rsi, 
+                        borderColor: 'purple', 
+                        fill: false, 
+                        pointRadius: 0 // 不显示 RSI 折线图的点 
+                    }
+                    
+                ],
             },
-            options: { responsive: true },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true // 显示图例
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                if (context.dataset.label === 'Buy Signal' || context.dataset.label === 'Sell Signal') {
+                                    const signalType = context.dataset.label === 'Buy Signal' ? 'Buy' : 'Sell';
+                                    const date = context.raw.x; // 获取日期
+                                    const value = context.raw.y.toFixed(2); // 获取值
+                                    return `${signalType} Signal - 日期: ${date}, RSI: ${value}`;
+                                }
+                                return `${context.dataset.label}: ${context.raw.toFixed(2)}`;
+                            }
+                        }
+                    }
+                },
+                elements: {
+                    point: {
+                        radius: 4
+                    }
+                }
+            }
         });
     }
-
-    const signupForm = document.getElementById("signupForm");
-    const signupButton = document.getElementById("signupButton");
-
-    let isSignupValid;
-    signupForm?.addEventListener("submit", (e) => {
-        const inputs = signupForm.querySelectorAll(".input-field");
-
-        // Check for empty fields
-        inputs.forEach((input) => {
-        if (input.value.trim() === "") {
-            isSignupValid = false;
-            input.style.borderColor = "var(--danger-color)";
-            input.nextElementSibling?.remove(); // Remove old error message
-            const error = document.createElement("p");
-            error.style.color = "var(--danger-color)";
-            error.textContent = `${input.name} cannot be empty`;
-            input.insertAdjacentElement("afterend", error);
-        } else {
-            input.style.borderColor = "var(--border-light)";
-            input.nextElementSibling?.remove(); // Remove error message
-            isSignupValid = true;
-        }
-        });
-
-        if (!isSignupValid) {
-            e.preventDefault();
-        }
-    });
-
-    signupButton?.addEventListener("click", () => {
-        if (isSignupValid) {
-            signupButton.classList.add("loading");
-            setTimeout(() => signupButton.classList.remove("loading"), 2000);
-        }
-    });
-
-    const loginForm = document.getElementById("loginForm");
-    const loginButton = document.getElementById("loginButton");
-
-    let isLoginValid;
-    loginForm?.addEventListener("submit", (e) => {
-        const inputs = loginForm.querySelectorAll(".input-field");
-
-        // Validate inputs
-        inputs.forEach((input) => {
-        if (input.value.trim() === "") {
-            isLoginValid = false;
-            input.style.borderColor = "var(--danger-color)";
-            input.nextElementSibling?.remove(); // Remove old error messages
-            const error = document.createElement("p");
-            error.style.color = "var(--danger-color)";
-            error.textContent = `${input.name} cannot be empty`;
-            input.insertAdjacentElement("afterend", error);
-        } else {
-            input.style.borderColor = "var(--border-light)";
-            input.nextElementSibling?.remove(); // Remove error messages
-            isLoginValid = true;
-        }
-        });
-
-        // Prevent form submission if invalid
-        if (!isLoginValid) {
-            e.preventDefault();
-        }
-    });
-
-    // Simulate button loading state
-    loginButton?.addEventListener("click", () => {
-        if (isLoginValid) {
-            loginButton.classList.add("loading");
-            setTimeout(() => loginButton.classList.remove("loading"), 2000); // Simulate loading
-        }
-    });
-
 });
