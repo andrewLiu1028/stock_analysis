@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
             gptAnalysisDiv.innerHTML = "<p style='color:red;'>無法取得GPT分析結果</p>";
             return;
         }
-
+    
         // 將換行符轉換為HTML的換行和段落
         const formattedAnalysis = analysis
             .split('\n')
@@ -111,14 +111,14 @@ document.addEventListener('DOMContentLoaded', () => {
             .map(line => {
                 // 如果行以數字和點開始（如 "1."），將其設為標題樣式
                 if (/^\d+\./.test(line)) {
-                    return `<h4 class="analysis-title">${line}</h4>`;
+                    return `<h4 class="analysis-title" style="color:rgb(187, 18, 26); font-size: 20px; font-weight: bold; margin-top: 12px;">${line}</h4>`;
                 }
-                return `<p>${line}</p>`;
+                return `<p style="margin-left: 10px;">${line}</p>`;
             })
             .join('');
-
+    
         gptAnalysisDiv.innerHTML = `
-            <div class="gpt-analysis-content">
+            <div class="gpt-analysis-content" style="line-height: 1.6; font-family: Arial, sans-serif;">
                 ${formattedAnalysis}
             </div>
         `;
@@ -182,19 +182,77 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createClosePriceChart(data) {
-        const ctx = document.getElementById('closePriceChart').getContext('2d');
-        const labels = data.stock_data.map((d) => formatDate(d.Date));
-        const closePrices = data.stock_data.map((d) => d.Close);
+    const ctx = document.getElementById('closePriceChart').getContext('2d');
+    const labels = data.stock_data.map((d) => formatDate(d.Date));
+    const closePrices = data.stock_data.map((d) => d.Close);
+    const signals = data.signals.kd || []; // 取得買賣訊號，確保存在
 
-        return new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{ label: 'Close Price', data: closePrices, borderColor: 'blue', fill: false }],
+    // 過濾買賣信號，取得 x (日期) 和 y (價格)
+    const buySignals = signals
+        .filter(signal => signal.type === 'buy')
+        .map(signal => ({ x: labels[signal.position], y: closePrices[signal.position] }));
+
+    const sellSignals = signals
+        .filter(signal => signal.type === 'sell')
+        .map(signal => ({ x: labels[signal.position], y: closePrices[signal.position] }));
+
+    return new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Buy Signal',
+                    data: buySignals,
+                    borderColor: 'red',
+                    pointBackgroundColor: 'red',
+                    pointStyle: 'triangle',
+                    pointRadius: 8,
+                    showLine: false // 顯示買訊號為獨立點
+                },
+                {
+                    label: 'Sell Signal',
+                    data: sellSignals,
+                    rotation: 60,
+                    borderColor: 'green',
+                    pointBackgroundColor: 'green',
+                    pointStyle: 'triangle',
+                    pointRadius: 8,
+                    showLine: false // 顯示賣訊號為獨立點
+                },
+                {
+                    label: 'Close Price',
+                    data: closePrices,
+                    borderColor: 'blue',
+                    fill: false,
+                    pointRadius: 1 // 折線圖無點點
+                }
+            ],
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true // 顯示圖例
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const index = context.dataIndex;
+                            const date = labels[index];
+                            return `日期: ${date}`;
+                        }
+                    }
+                }
             },
-            options: { responsive: true },
-        });
-    }
+            elements: {
+                point: {
+                    radius: 4
+                }
+            }
+        }
+    });
+}
 
     function createVolumeBarChart(data) {
         const ctx = document.getElementById('volumeChart').getContext('2d');
