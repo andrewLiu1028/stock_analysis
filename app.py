@@ -236,7 +236,7 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    from .form import LoginForm
+    from form import LoginForm
     form = LoginForm()
 
     if form.validate_on_submit():        
@@ -250,7 +250,7 @@ def login():
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
-    from .form import SignupForm
+    from form import SignupForm
     form = SignupForm()
 
     if form.validate_on_submit():
