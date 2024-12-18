@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, EmailField, validators, ValidationError
-from .model import User
+from model import User
 from werkzeug.security import check_password_hash,generate_password_hash
 
 
