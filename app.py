@@ -8,8 +8,8 @@ import os
 import openai
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager, login_user, logout_user, login_required
-from .model import User
-from .database import db
+from model import User
+from database import db
 from werkzeug.security import generate_password_hash
 from google.cloud import secretmanager
 
