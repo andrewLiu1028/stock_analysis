@@ -87,7 +87,7 @@ input[type="date"],
 input[type="email"],
 input[type="password"] {
     flex: 1;
-    padding: 10px 14px;
+    padding: 10px 15px;
     border: 1.5px solid var(--border-light);
     border-radius: 6px;
     font-size: 15px;
@@ -311,6 +311,11 @@ table tr:hover td {
         padding: 20px;
     }
 
+    h1 {
+        font-size: 24px;
+        margin-bottom: 24px;
+    }
+
     .form-container {
         padding: 20px 16px;
     }
@@ -338,6 +343,7 @@ table tr:hover td {
         border-radius: 4px; /* 稍微減小圓角 */
     }
 
+    #signupForm input[type="text"],
     input[type="email"],
     input[type="password"] {
         max-width: -webkit-fill-available;
