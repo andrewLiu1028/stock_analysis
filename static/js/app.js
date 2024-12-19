@@ -508,4 +508,79 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    const signupForm = document.getElementById("signupForm");
+    const signupButton = document.getElementById("signupButton");
+
+    let isSignupValid;
+    signupForm?.addEventListener("submit", (e) => {
+        const inputs = signupForm.querySelectorAll(".input-field");
+
+        // Check for empty fields
+        inputs.forEach((input) => {
+        if (input.value.trim() === "") {
+            isSignupValid = false;
+            input.style.borderColor = "var(--danger-color)";
+            input.nextElementSibling?.remove(); // Remove old error message
+            const error = document.createElement("p");
+            error.style.color = "var(--danger-color)";
+            error.textContent = `${input.name} cannot be empty`;
+            input.insertAdjacentElement("afterend", error);
+        } else {
+            input.style.borderColor = "var(--border-light)";
+            input.nextElementSibling?.remove(); // Remove error message
+            isSignupValid = true;
+        }
+        });
+
+        if (!isSignupValid) {
+            e.preventDefault();
+        }
+    });
+
+    signupButton?.addEventListener("click", () => {
+        if (isSignupValid) {
+            signupButton.classList.add("loading");
+            setTimeout(() => signupButton.classList.remove("loading"), 2000);
+        }
+    });
+
+    const loginForm = document.getElementById("loginForm");
+    const loginButton = document.getElementById("loginButton");
+
+    let isLoginValid;
+    loginForm?.addEventListener("submit", (e) => {
+        const inputs = loginForm.querySelectorAll(".input-field");
+
+        // Validate inputs
+        inputs.forEach((input) => {
+        if (input.value.trim() === "") {
+            isLoginValid = false;
+            input.style.borderColor = "var(--danger-color)";
+            input.nextElementSibling?.remove(); // Remove old error messages
+            const error = document.createElement("p");
+            error.style.color = "var(--danger-color)";
+            error.textContent = `${input.name} cannot be empty`;
+            input.insertAdjacentElement("afterend", error);
+        } else {
+            input.style.borderColor = "var(--border-light)";
+            input.nextElementSibling?.remove(); // Remove error messages
+            isLoginValid = true;
+        }
+        });
+
+        // Prevent form submission if invalid
+        if (!isLoginValid) {
+            e.preventDefault();
+        }
+    });
+
+    // Simulate button loading state
+    loginButton?.addEventListener("click", () => {
+        if (isLoginValid) {
+            loginButton.classList.add("loading");
+            setTimeout(() => loginButton.classList.remove("loading"), 2000); // Simulate loading
+        }
+    });
+
 });
