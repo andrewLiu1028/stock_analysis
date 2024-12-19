@@ -1,367 +1,431 @@
 :root {
-  --primary-color: #1a73e8;
-  --primary-dark: #1557b0;
-  --text-primary: #1f2937;
-  --text-secondary: #4b5563;
-  --text-light: #6b7280;
-  --background-light: #f3f4f6;
-  --border-light: #e5e7eb;
-  --success-color: #10b981;
-  --danger-color: #ef4444;
-  --warning-color: #f59e0b;
+    --primary-color: #1a73e8;
+    --primary-dark: #1557b0;
+    --text-primary: #1f2937;
+    --text-secondary: #4b5563;
+    --text-light: #6b7280;
+    --background-light: #f3f4f6;
+    --border-light: #e5e7eb;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
 }
 
 body {
-  font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-  margin: 0;
-  padding: 30px 20px;
-  background: linear-gradient(135deg, #f0f2f5, #e5e7eb);
-  color: var(--text-primary);
-  line-height: 1.6;
-  min-height: 100vh;
+    font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    margin: 0;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, #f0f2f5, #e5e7eb);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
 }
 
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  background: white;
-  padding: 32px;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 /* 標題樣式 */
 h1 {
-  text-align: center;
-  margin: 0 0 32px 0;
-  color: var(--text-primary);
-  font-size: 28px;
-  font-weight: 700;
-  padding-bottom: 20px;
-  border-bottom: 2px solid var(--border-light);
-  letter-spacing: 0.5px;
+    text-align: center;
+    margin: 0 0 32px 0;
+    color: var(--text-primary);
+    font-size: 28px;
+    font-weight: 700;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--border-light);
+    letter-spacing: 0.5px;
 }
 
 /* 表單容器樣式 */
 .form-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  max-width: 800px;
-  margin: 0 auto 32px;
-  padding: 28px;
-  background: var(--background-light);
-  border-radius: 12px;
-  border: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 800px;
+    margin: 0 auto 32px;
+    padding: 28px;
+    background: var(--background-light);
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
 }
 
 .form-group {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  white-space: nowrap;
-  width: 100%;
-  max-width: 720px;
-  background: white;
-  padding: 16px 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    white-space: nowrap;
+    width: 100%;
+    max-width: 720px;
+    background: white;
+    padding: 16px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .form-group:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
 }
 
 .form-group label {
-  flex: 0 0 180px;
-  font-weight: 600;
-  color: var(--text-primary);
-  font-size: 15px;
+    flex: 0 0 180px;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 15px;
 }
 
 input[type="text"],
 input[type="date"],
 input[type="email"],
 input[type="password"] {
-  flex: 1;
-  padding: 10px 14px;
-  border: 1.5px solid var(--border-light);
-  border-radius: 6px;
-  font-size: 15px;
-  color: var(--text-primary);
-  background: white;
-  transition: all 0.3s ease;
-  max-width: 200px;
+    flex: 1;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border-light);
+    border-radius: 6px;
+    font-size: 15px;
+    color: var(--text-primary);
+    background: white;
+    transition: all 0.3s ease;
+    max-width: 400px;
 }
 
 input[type="text"]:hover,
 input[type="date"]:hover {
-  border-color: var(--primary-color);
+   border-color: var(--primary-color);
 }
 
 input[type="text"]:focus,
 input[type="date"]:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
 }
 
 /* 按鈕樣式 */
 .button-container {
-  width: 100%;
-  max-width: 720px;
-  text-align: center;
-  margin-top: 8px;
+    width: 100%;
+    max-width: 720px;
+    text-align: center;
+    margin-top: 8px;
 }
 
 #queryBtn {
-  width: 140px;
-  padding: 12px 0;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  background: linear-gradient(
-    135deg,
-    var(--primary-color),
-    var(--primary-dark)
-  );
-  color: white;
-  border: none;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(26, 115, 232, 0.3);
-  transition: all 0.3s ease;
+    width: 140px;
+    padding: 12px 0;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    background: linear-gradient(
+        135deg,
+        var(--primary-color),
+        var(--primary-dark)
+    );
+    color: white;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(26, 115, 232, 0.3);
+    transition: all 0.3s ease;
 }
 
 #queryBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
 }
 
 #queryBtn:active {
-  transform: translateY(0);
+    transform: translateY(0);
 }
 
 /* 文字區塊樣式 */
 .text-section {
-  background: white;
-  padding: 24px;
-  margin: 20px 0;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  border: 1px solid var(--border-light);
+    background: white;
+    padding: 24px;
+    margin: 20px 0;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--border-light);
 }
 
 .text-section:not(:last-child) {
-  margin-bottom: 24px;
+    margin-bottom: 24px;
 }
 
 .text-section p {
-  margin: 0;
-  line-height: 1.8;
-  color: var(--text-secondary);
-  font-size: 15px;
+    margin: 0;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    font-size: 15px;
 }
 
 /* 圖表容器 */
 .chart-container {
-  margin: 24px 0;
-  padding: 24px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  border: 1px solid var(--border-light);
+    margin: 24px 0;
+    padding: 24px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--border-light);
 }
 
 /* 表格容器和樣式 */
 .table-container {
-  margin-top: 32px;
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  border: 1px solid var(--border-light);
+    margin-top: 32px;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--border-light);
 }
 
 .summary-title {
-  padding: 16px 20px;
-  background: var(--background-light);
-  border-bottom: 2px solid var(--border-light);
-  color: var(--text-primary);
-  font-weight: 600;
-  font-size: 16px;
-}
+    padding: 16px 20px;
+    background: var(--background-light);
+    border-bottom: 2px solid var(--border-light);
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 16px;
+  }
 
 table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
 }
 
 table th {
-  background: #2c3e50;
-  color: white;
-  font-weight: 600;
-  padding: 14px 16px;
-  text-align: center;
-  font-size: 15px;
-  letter-spacing: 0.3px;
-  position: sticky;
-  top: 0;
+    background: #2c3e50;
+    color: white;
+    font-weight: 600;
+    padding: 14px 16px;
+    text-align: center;
+    font-size: 15px;
+    letter-spacing: 0.3px;
+    position: sticky;
+    top: 0;
 }
 
 table td {
-  padding: 12px 16px;
-  text-align: center;
-  border-bottom: 1px solid var(--border-light);
-  font-size: 15px;
-  color: var(--text-secondary);
-  transition: background-color 0.2s ease;
+    padding: 12px 16px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 15px;
+    color: var(--text-secondary);
+    transition: background-color 0.2s ease;
 }
 
 table tr:hover td {
-  background-color: #f8fafc;
+    background-color: #f8fafc;
 }
 
 /* 數據顏色區分 */
 .price-up {
-  color: var(--danger-color);
-  font-weight: 500;
+    color: var(--danger-color);
+    font-weight: 500;
 }
 
 .price-down {
-  color: var(--success-color);
-  font-weight: 500;
+    color: var(--success-color);
+    font-weight: 500;
 }
 
 .volume-high {
-  color: var(--warning-color);
-  font-weight: 500;
+    color: var(--warning-color);
+    font-weight: 500;
 }
 
 /* 載入動畫 */
 .loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  color: var(--text-secondary);
-  font-size: 15px;
-  gap: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    color: var(--text-secondary);
+    font-size: 15px;
+    gap: 12px;
 }
 
 .loading::after {
-  content: "";
-  width: 20px;
-  height: 20px;
-  border: 2.5px solid var(--border-light);
-  border-top: 2.5px solid var(--primary-color);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+    content: "";
+    width: 20px;
+    height: 20px;
+    border: 2.5px solid var(--border-light);
+    border-top: 2.5px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* 錯誤提示樣式 */
 .error-message {
-  background: #fef2f2;
-  color: var(--danger-color);
-  padding: 12px 16px;
-  border-radius: 8px;
-  margin: 16px 0;
-  font-size: 14px;
-  border: 1px solid #fecaca;
+    background: #fef2f2;
+    color: var(--danger-color);
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 16px 0;
+    font-size: 14px;
+    border: 1px solid #fecaca;
 }
 
 /* 成功提示樣式 */
 .success-message {
-  background: #f0fdf4;
-  color: var(--success-color);
-  padding: 12px 16px;
-  border-radius: 8px;
-  margin: 16px 0;
-  font-size: 14px;
-  border: 1px solid #dcfce7;
+    background: #f0fdf4;
+    color: var(--success-color);
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 16px 0;
+    font-size: 14px;
+    border: 1px solid #dcfce7;
 }
 
 #signupButton, #loginButton {
-  border: 1.5px solid var(--border-light);
-  background-color: white;
-  padding: 15px;
-  border-radius: 6px;
-  cursor: pointer;
+    border: 1.5px solid var(--border-light);
+    background-color: white;
+    padding: 15px;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
 /* 響應式設計 */
 @media (max-width: 768px) {
-  body {
-    padding: 16px;
-  }
+    body {
+        padding: 16px;
+    }
 
-  .container {
-    padding: 20px;
-  }
+    .container {
+        padding: 20px;
+    }
 
-  h1 {
-    font-size: 24px;
-    margin-bottom: 24px;
-  }
+    .form-container {
+        padding: 20px 16px;
+    }
+    
+    .form-group label {
+        flex: 0 0 auto; /* 讓標籤寬度自動調整 */
+        font-size: 14px; /* 減小字體大小 */
+        text-align: left; /* 文字靠左對齊 */
+        margin-bottom: 4px; /* 增加下方間距，讓其與輸入框分開 */
+        width: 70% ; /* 寬度縮小 */
+    }
+    
+    .form-group {
+        width: 90%;
+        flex-direction: column; /* 將標籤和輸入框堆疊成直向排列 */
+        align-items: flex-start; /* 對齊左側 */
+        gap: 8px; /* 增加標籤與輸入框的間距 */
+    }
+    
+    input[type="text"], input[type="date"] {
+        width: 70%; /* 輸入框寬度 */
+        max-width: none; /* 移除最大寬度限制 */
+        padding: 8px 12px; /* 減少內邊距，讓其在小螢幕上更緊湊 */
+        font-size: 14px; /* 字體縮小，適配小螢幕 */
+        border-radius: 4px; /* 稍微減小圓角 */
+    }
 
-  .form-container {
-    padding: 20px 16px;
-  }
+    input[type="email"],
+    input[type="password"] {
+        max-width: -webkit-fill-available;
+        width: 100%;
+        font-size: 14px;
+    }
+    
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    table th, table td {
+        white-space: nowrap;
+        font-size: 14px;
+        padding: 12px;
+    }
 
-  .form-group {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 16px;
-  }
-
-  .form-group label {
-    flex: 0 0 10px;
-    margin-bottom: 8px;
-    font-size: 14px;
-  }
-
-  input[type="text"],
-  input[type="email"],
-  input[type="password"] {
-    max-width: -webkit-fill-available;
-    width: 100%;
-    font-size: 14px;
-    padding: 8px 10px;
-  }
-
-  #signupButton, #loginButton {
-    width: 100%;
-    font-size: 15px;
-  }
-
-  table {
-    display: block;
-    overflow-x: auto;
-  }
-
-  table th,
-  table td {
-    white-space: nowrap;
-    font-size: 14px;
-    padding: 12px;
-  }
-
-  .summary-title {
-    font-size: 15px;
-    padding: 14px 16px;
-  }
+    .summary-title {
+        font-size: 15px;
+        padding: 14px 16px;
+    }
 }
 
+@media (max-width: 1024px) {
+    body {
+        padding: 20px; /* 輕微縮小外邊距 */
+    }
+
+    .container {
+        padding: 24px; /* 減少容器內邊距 */
+    }
+
+    h1 {
+        font-size: 26px; /* 適度縮小標題字體 */
+        margin-bottom: 20px;
+    }
+
+    .form-container {
+        padding: 18px 14px; /* 減少內邊距 */
+        gap: 12px; /* 間距微調 */
+    }
+
+    .form-group {
+        width: 80%; /* 表單組寬度設定為 80% */
+        flex-direction: column; /* 堆疊排列 */
+        align-items: flex-start; /* 左側對齊 */
+        gap: 10px; /* 間距調整 */
+    }
+
+    .form-group label {
+        flex: 0 0 auto; /* 讓標籤寬度根據內容調整 */
+        font-size: 15px; /* 字體微調 */
+        text-align: left;
+        margin-bottom: 4px; /* 與輸入框分隔 */
+        width: 75%; /* 寬度設定為 75% */
+    }
+
+    input[type="text"], input[type="date"] {
+        width: 75%; /* 輸入框寬度 */
+        max-width: none; /* 取消最大寬度限制 */
+        padding: 8px 10px; /* 緊湊內邊距 */
+        font-size: 15px; /* 字體調整 */
+        border-radius: 4px;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto; /* 水平滾動 */
+    }
+
+    table th, table td {
+        font-size: 14px; /* 字體縮小 */
+        padding: 10px; /* 單元格內邊距縮小 */
+    }
+
+    .summary-title {
+        font-size: 15px; /* 字體大小 */
+        padding: 12px 14px; /* 內邊距 */
+    }
+
+    .chart-container {
+        padding: 20px; /* 圖表區塊內邊距調整 */
+    }
+
+    .text-section {
+        padding: 18px; /* 減少內邊距 */
+        margin: 16px 0; /* 調整上下邊距 */
+        border-radius: 10px; /* 輕微縮小圓角 */
+    }
+}
