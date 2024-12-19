@@ -12,7 +12,7 @@
 }
 
 body {
-    font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+    font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
     margin: 0;
     padding: 30px 20px;
     background: linear-gradient(135deg, #f0f2f5, #e5e7eb);
@@ -58,6 +58,7 @@ h1 {
 
 .form-group {
     display: flex;
+    gap: 10px;
     align-items: center;
     white-space: nowrap;
     width: 100%;
@@ -81,7 +82,10 @@ h1 {
     font-size: 15px;
 }
 
-input[type="text"], input[type="date"] {
+input[type="text"],
+input[type="date"],
+input[type="email"],
+input[type="password"] {
     flex: 1;
     padding: 10px 15px;
     border: 1.5px solid var(--border-light);
@@ -93,11 +97,13 @@ input[type="text"], input[type="date"] {
     max-width: 400px;
 }
 
-input[type="text"]:hover, input[type="date"]:hover {
-    border-color: var(--primary-color);
+input[type="text"]:hover,
+input[type="date"]:hover {
+   border-color: var(--primary-color);
 }
 
-input[type="text"]:focus, input[type="date"]:focus {
+input[type="text"]:focus,
+input[type="date"]:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
@@ -117,7 +123,11 @@ input[type="text"]:focus, input[type="date"]:focus {
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    background: linear-gradient(
+        135deg,
+        var(--primary-color),
+        var(--primary-dark)
+    );
     color: white;
     border: none;
     border-radius: 8px;
@@ -182,7 +192,7 @@ input[type="text"]:focus, input[type="date"]:focus {
     color: var(--text-primary);
     font-weight: 600;
     font-size: 16px;
-}
+  }
 
 table {
     width: 100%;
@@ -216,17 +226,17 @@ table tr:hover td {
 }
 
 /* 數據顏色區分 */
-.price-up { 
+.price-up {
     color: var(--danger-color);
     font-weight: 500;
 }
 
-.price-down { 
+.price-down {
     color: var(--success-color);
     font-weight: 500;
 }
 
-.volume-high { 
+.volume-high {
     color: var(--warning-color);
     font-weight: 500;
 }
@@ -243,7 +253,7 @@ table tr:hover td {
 }
 
 .loading::after {
-    content: '';
+    content: "";
     width: 20px;
     height: 20px;
     border: 2.5px solid var(--border-light);
@@ -253,8 +263,12 @@ table tr:hover td {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* 錯誤提示樣式 */
@@ -279,6 +293,14 @@ table tr:hover td {
     border: 1px solid #dcfce7;
 }
 
+#signupButton, #loginButton {
+    border: 1.5px solid var(--border-light);
+    background-color: white;
+    padding: 15px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
 /* 響應式設計 */
 @media (max-width: 768px) {
     body {
@@ -288,7 +310,7 @@ table tr:hover td {
     .container {
         padding: 20px;
     }
-    
+
     h1 {
         font-size: 24px;
         margin-bottom: 24px;
@@ -299,7 +321,6 @@ table tr:hover td {
     }
     
     .form-group label {
-        
         flex: 0 0 auto; /* 讓標籤寬度自動調整 */
         font-size: 14px; /* 減小字體大小 */
         text-align: left; /* 文字靠左對齊 */
@@ -320,6 +341,14 @@ table tr:hover td {
         padding: 8px 12px; /* 減少內邊距，讓其在小螢幕上更緊湊 */
         font-size: 14px; /* 字體縮小，適配小螢幕 */
         border-radius: 4px; /* 稍微減小圓角 */
+    }
+
+    #signupForm input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        max-width: -webkit-fill-available;
+        width: 100%;
+        font-size: 14px;
     }
     
     table {
