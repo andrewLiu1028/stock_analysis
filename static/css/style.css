@@ -300,6 +300,7 @@ table tr:hover td {
     border-radius: 6px;
     cursor: pointer;
     font-size: inherit;
+    color: var(--text-primary);
 }
 
 /* 響應式設計 */
