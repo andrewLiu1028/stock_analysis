@@ -8,9 +8,10 @@ import os
 import openai
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager, login_user, logout_user, login_required
-from .model import User
-from .database import db
+from model import User
+from database import db
 from werkzeug.security import generate_password_hash
+from google.cloud import secretmanager
 
 login_manager = LoginManager()
 login_manager.login_view = '/login'
@@ -27,8 +28,15 @@ with app.app_context():
     db.create_all()
 
 #OpenAI API key
-openai.api_key = os.getenv("OPENAI_API_KEY")
+#openai.api_key = os.getenv("OPENAI_API_KEY")
 
+project_id = os.environ["PROJECT_ID"]
+client = secretmanager.SecretManagerServiceClient()
+
+secret_name = f"projects/{project_id}/secrets/ccu-stock-analysis-api-key/versions/latest"
+secret_value = client.access_secret_version(name=secret_name).payload.data.decode("UTF-8")
+
+openai.api_key = secret_value
 
 @login_manager.user_loader
 def load_user(user):
@@ -228,7 +236,7 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    from .form import LoginForm
+    from form import LoginForm
     form = LoginForm()
 
     if form.validate_on_submit():        
@@ -242,7 +250,7 @@ def login():
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
-    from .form import SignupForm
+    from form import SignupForm
     form = SignupForm()
 
     if form.validate_on_submit():
@@ -307,4 +315,4 @@ def query_stock():
         return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

@@ -1,4 +1,4 @@
-from .database import db
+from database import db
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import mapped_column
 from flask_login import UserMixin
